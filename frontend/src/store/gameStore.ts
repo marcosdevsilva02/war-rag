@@ -105,23 +105,53 @@ export const useGameStore = create<GameState>((set) => ({
     }
   }),
 
-  resolveCombat: (attackerId, defenderId, attackerCount) => {
-    // Basic Dice logic (to be refined with Ragnarok modifiers)
-    console.log(`Combat: ${attackerId} attacking ${defenderId} with ${attackerCount} troops`)
-    const attackerRolls = Array.from({ length: Math.min(attackerCount, 3) }, () => Math.floor(Math.random() * 6) + 1).sort((a, b) => b - a)
-    const defenderRolls = Array.from({ length: Math.min(2, 2) }, () => Math.floor(Math.random() * 6) + 1).sort((a, b) => b - a) // Placeholder for actual defender count
-    
+
+  resolveCombat: (attackerId, defenderId, attackerCount) => set((state) => {
+    const attacker = state.territories[attackerId]
+    const defender = state.territories[defenderId]
+    if (!attacker || !defender) return state
+    if (attacker.troops <= 1) return state  // Precisa de pelo menos 2 tropas para atacar
+
+    // Rola os dados
+    const numAttDice = Math.min(Math.min(attackerCount, 3), attacker.troops - 1)
+    const numDefDice = Math.min(2, defender.troops)
+
+    const attackerRolls = Array.from({ length: numAttDice }, () => Math.floor(Math.random() * 6) + 1).sort((a, b) => b - a)
+    const defenderRolls = Array.from({ length: numDefDice }, () => Math.floor(Math.random() * 6) + 1).sort((a, b) => b - a)
+
     let attackerLosses = 0
     let defenderLosses = 0
-    
+
     for (let i = 0; i < Math.min(attackerRolls.length, defenderRolls.length); i++) {
-        if (attackerRolls[i] > defenderRolls[i]) defenderLosses++
-        else attackerLosses++
+      if (attackerRolls[i] > defenderRolls[i]) defenderLosses++
+      else attackerLosses++
     }
-    
-    // State update within capture scope would be better if this was an action, but here returning for UI to handle
-    return { attackerLosses, defenderLosses }
-  },
+
+    const newAttackerTroops = attacker.troops - attackerLosses
+    const newDefenderTroops = defender.troops - defenderLosses
+
+    // Aplica resultado
+    if (newDefenderTroops <= 0) {
+      // ── Conquista! ──
+      const troopsMoving = Math.max(1, numAttDice)
+      return {
+        territories: {
+          ...state.territories,
+          [attackerId]: { ...attacker, troops: newAttackerTroops - troopsMoving },
+          [defenderId]: { ...defender, ownerId: attacker.ownerId, troops: troopsMoving }
+        }
+      }
+    } else {
+      // ── Batalha sem conquista ──
+      return {
+        territories: {
+          ...state.territories,
+          [attackerId]: { ...attacker, troops: Math.max(1, newAttackerTroops) },
+          [defenderId]: { ...defender, troops: newDefenderTroops }
+        }
+      }
+    }
+  }),
 
   startGame: (players) => set((state) => {
     // 1. Shuffle territories
