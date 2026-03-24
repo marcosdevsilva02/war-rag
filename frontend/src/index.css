@@ -1,0 +1,141 @@
+/* Ragnarok Wars - Core Design System */
+
+:root {
+  /* PRD Palette */
+  --gold: #C9A227;
+  --gold-light: #E8C45A;
+  --gold-dark: #8B6E14;
+  --crimson: #8B1A1A;
+  --crimson-light: #C0392B;
+  --deep: #0D0A14;
+  --deep2: #13101E;
+  --deep3: #1C1828;
+  --surface: #201D2E;
+  --surface2: #282438;
+  --text: #E8E0CC;
+  --text-muted: #A89E84;
+  --text-dim: #6B6254;
+  --border: rgba(201, 162, 39, 0.2);
+  --border-strong: rgba(201, 162, 39, 0.5);
+  --teal: #1A8B8B;
+  --teal-light: #27C4C4;
+  --purple: #6B3FA0;
+  --purple-light: #9B6DD0;
+
+  /* Elevations */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
+  
+  /* Transitions */
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--deep);
+  color: var(--text);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.75;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Runic background pattern approximation */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(107, 63, 160, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(139, 26, 26, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1, h2, h3, h4, .cinzel {
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gradient-text {
+  background: linear-gradient(170deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface);
+  border-radius: 4px;
+  border: 2px solid var(--deep);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-dark);
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+  text-decoration: none;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--deep);
+}
+
+.btn-primary:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-outline:hover {
+  background: rgba(201, 162, 39, 0.1);
+  border-color: var(--gold-light);
+}

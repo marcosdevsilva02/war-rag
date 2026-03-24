@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD — Ragnarok Wars</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A227;
+    --gold-light: #E8C45A;
+    --gold-dark: #8B6E14;
+    --crimson: #8B1A1A;
+    --crimson-light: #C0392B;
+    --deep: #0D0A14;
+    --deep2: #13101E;
+    --deep3: #1C1828;
+    --surface: #201D2E;
+    --surface2: #282438;
+    --text: #E8E0CC;
+    --text-muted: #A89E84;
+    --text-dim: #6B6254;
+    --border: rgba(201,162,39,0.2);
+    --border-strong: rgba(201,162,39,0.5);
+    --teal: #1A8B8B;
+    --teal-light: #27C4C4;
+    --purple: #6B3FA0;
+    --purple-light: #9B6DD0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* Runic background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(ellipse at 20% 20%, rgba(107,63,160,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(139,26,26,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(201,162,39,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ═══ COVER ═══ */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cover-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  .cover-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(52px, 9vw, 96px);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    background: linear-gradient(170deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    text-shadow: none;
+  }
+
+  .cover-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 2.5rem;
+  }
+
+  .cover-divider {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 2.5rem;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .cover-meta span strong {
+    display: block;
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .rune-border {
+    position: absolute;
+    inset: 40px;
+    border: 1px solid var(--border);
+    pointer-events: none;
+  }
+  .rune-border::before {
+    content: '᚛';
+    position: absolute;
+    top: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--deep);
+    padding: 0 12px;
+    color: var(--gold);
+    font-size: 18px;
+  }
+  .rune-border::after {
+    content: '᚜';
+    position: absolute;
+    bottom: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--deep);
+    padding: 0 12px;
+    color: var(--gold);
+    font-size: 18px;
+  }
+
+  /* ═══ NAVIGATION ═══ */
+  .toc-nav {
+    background: var(--deep2);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0;
+  }
+
+  .toc-nav .container {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .toc-nav a {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 16px 20px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .toc-nav a:hover {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ═══ SECTIONS ═══ */
+  .section {
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 2rem;
+  }
+
+  .section-title .accent { color: var(--gold); }
+
+  /* ═══ TYPOGRAPHY ═══ */
+  h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold-light);
+    margin: 2.5rem 0 1rem;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h3::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  p {
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    font-weight: 300;
+  }
+
+  strong { font-weight: 600; color: var(--text); }
+
+  /* ═══ CALLOUT BOXES ═══ */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+  }
+
+  .callout-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .callout p { margin: 0; color: var(--text-muted); font-size: 15px; }
+
+  /* ═══ FEATURE CARDS ═══ */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--card-accent, var(--gold));
+  }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  .card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ═══ TABLES ═══ */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead {
+    background: var(--surface);
+  }
+
+  th {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tbody tr:hover { background: var(--surface); }
+
+  /* ═══ RANK SYSTEM ═══ */
+  .rank-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .rank-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+
+  .rank-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+
+  .rank-name {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .rank-range {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ═══ GAME MODES ═══ */
+  .mode-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    align-items: start;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mode-row:last-child { border-bottom: none; }
+
+  .mode-label {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .mode-icon { font-size: 36px; margin-bottom: 8px; display: block; }
+
+  .mode-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+
+  /* ═══ DB SCHEMA ═══ */
+  .schema-block {
+    background: var(--deep2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .schema-header {
+    background: var(--surface);
+    padding: 10px 16px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .schema-row {
+    display: flex;
+    gap: 1rem;
+    padding: 8px 16px;
+    border-bottom: 1px solid rgba(201,162,39,0.08);
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    align-items: center;
+  }
+
+  .schema-row:last-child { border-bottom: none; }
+
+  .schema-field { color: var(--text-muted); flex: 1; }
+  .schema-type { color: var(--teal-light); font-size: 11px; min-width: 80px; }
+  .schema-constraint { color: var(--gold-dark); font-size: 11px; }
+  .schema-pk { color: var(--gold); font-size: 10px; background: rgba(201,162,39,0.15); padding: 1px 6px; border-radius: 3px; }
+
+  /* ═══ TECH STACK ═══ */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .tech-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 14px;
+  }
+
+  .tech-layer {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .tech-name {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ═══ TIMELINE ═══ */
+  .timeline {
+    position: relative;
+    margin: 2rem 0;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold), var(--gold-dark), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.375rem;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--deep);
+    box-shadow: 0 0 0 3px rgba(201,162,39,0.3);
+  }
+
+  .timeline-label {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* ═══ BADGE ═══ */
+  .badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .badge-gold { background: rgba(201,162,39,0.15); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+  .badge-teal { background: rgba(26,139,139,0.15); color: var(--teal-light); border: 1px solid rgba(26,139,139,0.3); }
+  .badge-crimson { background: rgba(139,26,26,0.2); color: #E05050; border: 1px solid rgba(192,57,43,0.3); }
+  .badge-purple { background: rgba(107,63,160,0.15); color: var(--purple-light); border: 1px solid rgba(107,63,160,0.3); }
+
+  /* ═══ LISTS ═══ */
+  ul.styled {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem;
+  }
+
+  ul.styled li {
+    padding: 6px 0 6px 1.5rem;
+    position: relative;
+    font-size: 15px;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(201,162,39,0.06);
+  }
+
+  ul.styled li:last-child { border-bottom: none; }
+
+  ul.styled li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dark);
+    font-size: 8px;
+    top: 10px;
+  }
+
+  /* ═══ MAP TERRITORY ═══ */
+  .territory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+  }
+
+  .territory-cell {
+    background: var(--surface);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .territory-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-light);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .territory-region {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .territory-troops {
+    font-size: 20px;
+    margin-top: 4px;
+  }
+
+  /* ═══ FOOTER ═══ */
+  .doc-footer {
+    padding: 3rem 0;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  .doc-footer p {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 640px) {
+    .mode-row { grid-template-columns: 1fr; }
+    .territory-grid { grid-template-columns: repeat(2, 1fr); }
+    .cover { padding: 2rem 1.5rem; }
+    .rune-border { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ COVER ═══════════════ -->
+<div class="cover">
+  <div class="rune-border"></div>
+  <p class="cover-eyebrow">Product Requirements Document · v1.0</p>
+  <h1 class="cover-title">RAGNAROK<br>WARS</h1>
+  <p class="cover-subtitle">Conquest of the Nine Realms</p>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <span><strong>Documento</strong>PRD — Spec Inicial</span>
+    <span><strong>Versão</strong>1.0.0</span>
+    <span><strong>Data</strong>Março 2026</span>
+    <span><strong>Classificação</strong>Confidencial</span>
+  </div>
+</div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="toc-nav">
+  <div class="container">
+    <a href="#visao">Visão</a>
+    <a href="#gameplay">Gameplay</a>
+    <a href="#mapa">Mapa</a>
+    <a href="#personagens">Personagens</a>
+    <a href="#modos">Modos</a>
+    <a href="#rank">Ranking</a>
+    <a href="#auth">Cadastro</a>
+    <a href="#banco">Banco de Dados</a>
+    <a href="#tech">Tecnologia</a>
+    <a href="#roadmap">Roadmap</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════ SEÇÃO 1: VISÃO ═══════════════ -->
+<section class="section" id="visao">
+  <p class="section-eyebrow">01</p>
+  <h2 class="section-title">Visão do <span class="accent">Produto</span></h2>
+
+  <p><strong>Ragnarok Wars</strong> é um jogo de estratégia de conquista de territórios multiplayer online, inspirado mecanicamente no clássico <em>Risk</em> (WAR) e visualmente ambientado no universo de <em>Ragnarok Online</em>. Os jogadores controlam nações inspiradas nas regiões e facções do RO, distribuindo tropas sobre o mapa do mundo, travando batalhas por territórios e acumulando poder até dominar os Nove Reinos.</p>
+
+  <div class="callout">
+    <p class="callout-title">Proposta de Valor Central</p>
+    <p>Trazer a profundidade estratégica de jogos de conquista territorial para fãs de Ragnarok Online, unindo a nostalgia e o universo visual do MMORPG icônico com a acessibilidade e competitividade de um jogo de tabuleiro digital online.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card" style="--card-accent: var(--gold);">
+      <span class="card-icon">⚔️</span>
+      <p class="card-title">Estratégia Profunda</p>
+      <p>Mecânicas fiéis ao WAR: distribuição de tropas, ataque com dados, cartas de território e missões secretas.</p>
+    </div>
+    <div class="card" style="--card-accent: var(--teal);">
+      <span class="card-icon">🗺️</span>
+      <p class="card-title">Universo Ragnarok</p>
+      <p>Mapas, personagens, monstros, itens e trilha sonora extraídos diretamente do lore de Ragnarok Online.</p>
+    </div>
+    <div class="card" style="--card-accent: var(--crimson-light);">
+      <span class="card-icon">🏆</span>
+      <p class="card-title">Competição Real</p>
+      <p>Sistema de ranking com divisões, partidas rankeadas, sazonais e torneios entre jogadores do mundo inteiro.</p>
+    </div>
+    <div class="card" style="--card-accent: var(--purple);">
+      <span class="card-icon">🤖</span>
+      <p class="card-title">IA Adaptativa</p>
+      <p>Modo treino com IA em múltiplos níveis de dificuldade para aprendizado e prática sem pressão competitiva.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SEÇÃO 2: GAMEPLAY ═══════════════ -->
+<section class="section" id="gameplay">
+  <p class="section-eyebrow">02</p>
+  <h2 class="section-title">Mecânicas de <span class="accent">Jogo</span></h2>
+
+  <p>O núcleo de jogo segue as regras consagradas do WAR/Risk, adaptadas para o universo Ragnarok Online e para o formato digital assíncrono e em tempo real.</p>
+
+  <h3>Loop de Jogo Básico</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fase</th>
+          <th>Ação</th>
+          <th>Equivalente no Ragnarok</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Recrutamento</strong></td>
+          <td>Recebe tropas baseadas em territórios controlados + continentes completos + cartas</td>
+          <td>Convocação de Mercenários e Guarda das Cidades</td>
+        </tr>
+        <tr>
+          <td><strong>Ataque</strong></td>
+          <td>Rola dados (até 3 atacante vs até 2 defensor) para conquistar territórios adjacentes</td>
+          <td>Batalha PvP com habilidades especiais de classe</td>
+        </tr>
+        <tr>
+          <td><strong>Movimentação</strong></td>
+          <td>Reposiciona tropas entre territórios controlados conectados</td>
+          <td>Warp Portal e Rotas de Comércio</td>
+        </tr>
+        <tr>
+          <td><strong>Carta</strong></td>
+          <td>Recebe carta ao conquistar ≥1 território; troca conjuntos por tropas bônus</td>
+          <td>Cartas de MVP, Equipamentos e Runas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Modificadores Ragnarok</h3>
+  <p>Além das mecânicas clássicas do WAR, o jogo adiciona camadas temáticas únicas:</p>
+
+  <ul class="styled">
+    <li><strong>Classes de Tropas:</strong> Novice (1 força), Swordsman (2), Knight (3), Lord Knight (4), Paladin (5 + habilidade defensiva especial)</li>
+    <li><strong>MVPs como Wild Cards:</strong> Territórios com MVP ativo (Eddga, Baphomet, Dracula) ganham bônus defensivo aleatório de +1 a +3 dados</li>
+    <li><strong>Habilidades de Continente:</strong> Controlar Prontera completa dá +2 tropas e habilidade de Teleport para reposicionar tropas grátis uma vez por turno</li>
+    <li><strong>Itens de Campo:</strong> Ao conquistar território especial, o jogador pode sacar 1 carta de item (Condensed Red Potion = +1 tropa, Yggdrasil Berry = reviver 3 tropas eliminadas)</li>
+    <li><strong>Evento Ragnarok:</strong> A cada 10 rodadas, ocorre um evento aleatório do tipo enchente de Niflheim, tempestade de Asgard, invasão de Papunicha, que muda o campo estrategicamente</li>
+  </ul>
+
+  <h3>Sistema de Cartas de Missão</h3>
+  <p>Cada jogador recebe uma missão secreta no início da partida, fiel ao estilo WAR:</p>
+
+  <div class="card-grid">
+    <div class="card" style="--card-accent: var(--crimson-light);">
+      <p class="card-title">Missão de Conquista</p>
+      <p>Dominar 24 territórios quaisquer dos Nove Reinos antes dos adversários.</p>
+    </div>
+    <div class="card" style="--card-accent: var(--purple);">
+      <p class="card-title">Missão de Extermínio</p>
+      <p>Eliminar completamente o exército de uma cor específica do tabuleiro.</p>
+    </div>
+    <div class="card" style="--card-accent: var(--teal);">
+      <p class="card-title">Missão de Domínio</p>
+      <p>Conquistar dois continentes específicos (ex: Asgard + Midgard) simultaneamente.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SEÇÃO 3: MAPA ═══════════════ -->
+<section class="section" id="mapa">
+  <p class="section-eyebrow">03</p>
+  <h2 class="section-title">Mapa dos <span class="accent">Nove Reinos</span></h2>
+
+  <p>O tabuleiro representa os mundos de Ragnarok Online divididos em <strong>6 continentes</strong> (reinos) e <strong>42 territórios</strong>, mantendo a mesma proporção e distribuição de fronteiras do WAR clássico. Cada território corresponde a uma cidade, dungeon ou região icônica do RO.</p>
+
+  <div class="callout">
+    <p class="callout-title">Estrutura de Distribuição</p>
+    <p>42 territórios divididos em 6 reinos. Bônus por controle completo de reino: de +2 (Niflheim, menor) a +7 (Midgard, maior). Total de conexões de fronteira: ~80 adjacências bidirecionais, incluindo 6 rotas marítimas via Warp Portal.</p>
+  </div>
+
+  <h3>Os Seis Reinos (Continentes)</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Reino</th>
+          <th>Territórios</th>
+          <th>Bônus</th>
+          <th>Habilidade Especial</th>
+          <th>Territórios Incluídos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>⚔️ Midgard</strong></td>
+          <td>12</td>
+          <td>+7 tropas</td>
+          <td>Warp Pool: mover tropas entre qualquer 2 territórios próprios</td>
+          <td>Prontera, Geffen, Morroc, Al De Baran, Izlude, Payon, Alberta, Orc Village, Lutie, Comodo, Umbala, Lasagna</td>
+        </tr>
+        <tr>
+          <td><strong>🌊 Asgard</strong></td>
+          <td>9</td>
+          <td>+5 tropas</td>
+          <td>Bênção de Odin: 1x por partida, atacar qualquer território não adjacente</td>
+          <td>Valhalla Shrine, Odin's Temple, Yggdrasil Root, Vanaheim Gate, Asgard Fields, Bifrost, Midgard Bridge, Alfheim, Jotunheim Border</td>
+        </tr>
+        <tr>
+          <td><strong>🌑 Niflheim</strong></td>
+          <td>5</td>
+          <td>+2 tropas</td>
+          <td>Neblina dos Mortos: defensor rola 3 dados (em vez de 2) em Niflheim</td>
+          <td>Niflheim City, Hel's Gate, Nifflheim Dungeon, Nifflheim Swamp, Yggdrasil Seed</td>
+        </tr>
+        <tr>
+          <td><strong>🌋 Muspelheim</strong></td>
+          <td>7</td>
+          <td>+4 tropas</td>
+          <td>Fogo de Surtr: ao conquistar território, tropa derrotada pode ser ressuscitada (50% chance)</td>
+          <td>Magma Dungeon, Fire Cave, Biolabs, Thanatos Tower, Thor Volcano, Sphinx Depths, Glast Heim</td>
+        </tr>
+        <tr>
+          <td><strong>🌿 Alfheim</strong></td>
+          <td>5</td>
+          <td>+3 tropas</td>
+          <td>Luz dos Elfos: +1 tropa por turno em cada território de Alfheim sob controle</td>
+          <td>Louyang, Kunlun, Ayothaya, Amatsu, Dewata</td>
+        </tr>
+        <tr>
+          <td><strong>❄️ Jotunheim</strong></td>
+          <td>4</td>
+          <td>+3 tropas</td>
+          <td>Gelo Eterno: atacantes perdem -1 de seus dados de ataque ao invadir Jotunheim</td>
+          <td>Ice Dungeon, Lutie North, Gonryun, Nifflheim Tundra</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Amostra — Territórios de Midgard</h3>
+  <div class="territory-grid">
+    <div class="territory-cell">
+      <p class="territory-name">Prontera</p>
+      <p class="territory-region">Capital — Midgard</p>
+      <div class="territory-troops">🛡️</div>
+    </div>
+    <div class="territory-cell">
+      <p class="territory-name">Geffen</p>
+      <p class="territory-region">Torre de Magia</p>
+      <div class="territory-troops">🔮</div>
+    </div>
+    <div class="territory-cell">
+      <p class="territory-name">Morroc</p>
+      <p class="territory-region">Deserto do Sul</p>
+      <div class="territory-troops">⚔️</div>
+    </div>
+    <div class="territory-cell">
+      <p class="territory-name">Al De Baran</p>
+      <p class="territory-region">Cidade Alquímica</p>
+      <div class="territory-troops">⚗️</div>
+    </div>
+    <div class="territory-cell">
+      <p class="territory-name">Payon</p>
+      <p class="territory-region">Floresta dos Arqueiros</p>
+      <div class="territory-troops">🏹</div>
+    </div>
+    <div class="territory-cell">
+      <p class="territory-name">Glast Heim</p>
+      <p class="territory-region">Castelo Amaldiçoado</p>
+      <div class="territory-troops">💀</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SEÇÃO 4: PERSONAGENS / TROPAS ═══════════════ -->
+<section class="section" id="personagens">
+  <p class="section-eyebrow">04</p>
+  <h2 class="section-title">Personagens e <span class="accent">Tropas</span></h2>
+
+  <p>Cada jogador escolhe uma <strong>Facção</strong> no início da partida. As facções são baseadas em arquétipos de classes do Ragnarok Online e determinam o estilo visual das tropas, o avatar do jogador e uma habilidade de facção passiva única.</p>
+
+  <h3>As Seis Facções</h3>
+
+  <div class="card-grid">
+    <div class="card" style="--card-accent: #C9A227;">
+      <span class="card-icon">⚔️</span>
+      <p class="card-title">Ordem dos Cavaleiros de Prontera</p>
+      <p>Baseada em Swordsman/Knight/Lord Knight. Passiva: <em>Bravura</em> — ao atacar com 3+ tropas, rola um dado adicional e descarta o menor.</p>
+    </div>
+    <div class="card" style="--card-accent: #9B6DD0;">
+      <span class="card-icon">🔮</span>
+      <p class="card-title">Guilda dos Magos de Geffen</p>
+      <p>Baseada em Mage/Wizard/High Wizard. Passiva: <em>Magia de Guerra</em> — 1x por rodada, pode eliminar 2 tropas inimigas sem rolar dados (custo: 4 tropas).</p>
+    </div>
+    <div class="card" style="--card-accent: #27C4C4;">
+      <span class="card-icon">🏹</span>
+      <p class="card-title">Clã dos Arqueiros de Payon</p>
+      <p>Baseada em Archer/Hunter/Sniper. Passiva: <em>Ataque à Distância</em> — pode atacar territórios a 2 fronteiras de distância, não apenas adjacentes.</p>
+    </div>
+    <div class="card" style="--card-accent: #E05050;">
+      <span class="card-icon">💀</span>
+      <p class="card-title">Seita das Sombras de Glast Heim</p>
+      <p>Baseada em Rogue/Assassin/Guillotine Cross. Passiva: <em>Infiltração</em> — ao atacar, pode escolher ignorar cartas de item do defensor uma vez por partida.</p>
+    </div>
+    <div class="card" style="--card-accent: #4CAF50;">
+      <span class="card-icon">✨</span>
+      <p class="card-title">Santuário dos Acolytes de Irmimm</p>
+      <p>Baseada em Acolyte/Priest/High Priest. Passiva: <em>Bênção</em> — recebe +1 tropa extra ao iniciar recrutamento se controlar território com Igreja.</p>
+    </div>
+    <div class="card" style="--card-accent: #FF9800;">
+      <span class="card-icon">⚙️</span>
+      <p class="card-title">Forja dos Artesãos de Aldebaran</p>
+      <p>Baseada em Merchant/Blacksmith/Whitesmith. Passiva: <em>Comércio</em> — troca cartas de território por tropas com 1 carta a menos de desconto.</p>
+    </div>
+  </div>
+
+  <h3>Hierarquia de Tropas</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo de Tropa</th>
+          <th>Classe RO</th>
+          <th>Força</th>
+          <th>Dado de Ataque</th>
+          <th>Custo em Tropas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>🗡️ <strong>Recruta</strong></td><td>Novice</td><td>1</td><td>1d6</td><td>1 tropa base</td></tr>
+        <tr><td>⚔️ <strong>Guerreiro</strong></td><td>First Class</td><td>2</td><td>1d6+1</td><td>3 tropas base</td></tr>
+        <tr><td>🛡️ <strong>Veterano</strong></td><td>Second Class</td><td>3</td><td>1d6+2</td><td>7 tropas base</td></tr>
+        <tr><td>👑 <strong>Campeão</strong></td><td>Transcendent</td><td>5</td><td>2d6 (maior)</td><td>15 tropas base</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Monstros como Guardas de Território</h3>
+  <p>Territórios neutros (início de jogo) são guardados por monstros icônicos do RO que precisam ser derrotados na primeira conquista:</p>
+  <ul class="styled">
+    <li><strong>Poring (1 guarda):</strong> Territórios simples — fácil conquista inicial</li>
+    <li><strong>Orc Warrior (3 guardas):</strong> Territórios estratégicos de médio valor</li>
+    <li><strong>Sohee / Baphomet Jr. (5 guardas):</strong> Territórios com bônus de continente</li>
+    <li><strong>MVP: Eddga / Dracula / GTB (10 guardas + habilidade especial):</strong> Territórios lendários que concedem carta de MVP ao conquistador</li>
+  </ul>
+</section>
+
+<!-- ═══════════════ SEÇÃO 5: MODOS DE JOGO ═══════════════ -->
+<section class="section" id="modos">
+  <p class="section-eyebrow">05</p>
+  <h2 class="section-title">Modos de <span class="accent">Jogo</span></h2>
+
+  <div class="mode-row">
+    <div class="mode-label">
+      <span class="mode-icon">🤖</span>
+      <p class="mode-name">Treino com IA</p>
+    </div>
+    <div>
+      <h4>Jogo Treino — Solo vs Inteligência Artificial</h4>
+      <p>Modo offline/online para aprendizado das mecânicas sem impacto no ranking. O jogador enfrenta de 2 a 5 oponentes controlados por IA adaptativa em 3 níveis:</p>
+      <ul class="styled">
+        <li><strong>Poring (Fácil):</strong> IA comete erros propositais, não bloqueia missão do jogador, ideal para tutoriais</li>
+        <li><strong>Orc (Médio):</strong> IA jogadeixa estratégia sólida com foco em construção de continentes</li>
+        <li><strong>Baphomet (Difícil):</strong> IA calcula probabilidades, identifica missão do jogador e contra-ataca proativamente</li>
+      </ul>
+      <p>Sem recompensa de XP rankeado. Ganha <strong>EXP de Tutorial</strong> na primeira vitória em cada nível.</p>
+    </div>
+  </div>
+
+  <div class="mode-row">
+    <div class="mode-label">
+      <span class="mode-icon">🌍</span>
+      <p class="mode-name">Partida Normal</p>
+    </div>
+    <div>
+      <h4>Jogo Normal — Multiplayer Sem Rank</h4>
+      <p>Partidas públicas com 2 a 6 jogadores humanos. Sem impacto no ranking. Recompensa Zeny (moeda do jogo) e itens cosméticos:</p>
+      <ul class="styled">
+        <li>Matchmaking por nível geral (não por rank)</li>
+        <li>Tempo de turno: 90 segundos (configurável: 60 / 90 / 120s)</li>
+        <li>Recompensa: 50–200 Zeny por partida + chance de drop de Cosmético</li>
+        <li>Suporte a jogadores desconectados com IA assumindo controle temporariamente</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mode-row">
+    <div class="mode-label">
+      <span class="mode-icon">🏆</span>
+      <p class="mode-name">Rankeada</p>
+    </div>
+    <div>
+      <h4>Partida Rankeada — Competição Oficial</h4>
+      <p>Modo competitivo com impacto direto no Rating (MMR) e na divisão do jogador. Requisito mínimo: <strong>10 partidas normais completas</strong> para desbloquear.</p>
+      <ul class="styled">
+        <li>Matchmaking por faixa de MMR (±150 pontos)</li>
+        <li>Tempo de turno fixo: 60 segundos (sem configuração)</li>
+        <li>Vitória: +20 a +50 MMR dependendo da diferença de rating dos oponentes</li>
+        <li>Derrota: -10 a -30 MMR</li>
+        <li>Abandono de partida: -50 MMR + suspensão progressiva (10min → 1h → 24h → 7dias)</li>
+        <li>Temporadas de 3 meses com recompensas exclusivas por divisão alcançada</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mode-row">
+    <div class="mode-label">
+      <span class="mode-icon">👥</span>
+      <p class="mode-name">Personalizado</p>
+    </div>
+    <div>
+      <h4>Jogo Personalizado — Com Amigos</h4>
+      <p>Sala privada criada pelo anfitrião com código de convite de 6 dígitos. Totalmente configurável:</p>
+      <ul class="styled">
+        <li>2 a 6 jogadores (humanos ou IA para completar)</li>
+        <li>Tempo de turno: 30s / 60s / 90s / 120s / Ilimitado</li>
+        <li>Modo de vitória: Missão Secreta, Domínio Total (42 territórios) ou Eliminação</li>
+        <li>Opção de habilidades de facção: Ativadas / Desativadas (modo clássico puro)</li>
+        <li>Eventos Ragnarok: Ligados / Desligados</li>
+        <li>Sem impacto em ranking. Recompensa reduzida de Zeny (50% do normal)</li>
+        <li>Espectadores permitidos: até 10 por sala</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SEÇÃO 6: RANKING ═══════════════ -->
+<section class="section" id="rank">
+  <p class="section-eyebrow">06</p>
+  <h2 class="section-title">Sistema de <span class="accent">Ranking</span></h2>
+
+  <p>O sistema de ranking é baseado em <strong>MMR (Match Making Rating)</strong> com divisões nomeadas a partir do universo de Ragnarok Online. Cada temporada dura 3 meses, ao fim da qual as divisões são parcialmente resetadas (soft reset: rebaixa 2 divisões).</p>
+
+  <h3>Divisões de Rank</h3>
+  <div class="rank-grid">
+    <div class="rank-card">
+      <span class="rank-icon">🟤</span>
+      <p class="rank-name">Novice</p>
+      <p class="rank-range">0 – 800 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">⚪</span>
+      <p class="rank-name">Acolyte</p>
+      <p class="rank-range">801 – 1200 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">🟢</span>
+      <p class="rank-name">Knight</p>
+      <p class="rank-range">1201 – 1600 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">🔵</span>
+      <p class="rank-name">Crusader</p>
+      <p class="rank-range">1601 – 2000 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">🟣</span>
+      <p class="rank-name">High Wizard</p>
+      <p class="rank-range">2001 – 2400 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">🟠</span>
+      <p class="rank-name">Sniper</p>
+      <p class="rank-range">2401 – 2800 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">🔴</span>
+      <p class="rank-name">Lord Knight</p>
+      <p class="rank-range">2801 – 3200 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">⭐</span>
+      <p class="rank-name">Transcendent</p>
+      <p class="rank-range">3201 – 3600 MMR</p>
+    </div>
+    <div class="rank-card">
+      <span class="rank-icon">💎</span>
+      <p class="rank-name">God of War</p>
+      <p class="rank-range">3601+ MMR · Top 500</p>
+    </div>
+  </div>
+
+  <h3>Recompensas por Temporada</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank Alcançado</th>
+          <th>Recompensas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Novice</td><td>Moldura de perfil básica + 100 Zeny</td></tr>
+        <tr><td>Acolyte</td><td>Avatar temático + 300 Zeny</td></tr>
+        <tr><td>Knight+</td><td>Skin de exército exclusiva + 600 Zeny</td></tr>
+        <tr><td>High Wizard+</td><td>Efeito de board animado + 1.200 Zeny</td></tr>
+        <tr><td>Lord Knight+</td><td>Título de perfil exclusivo + 2.000 Zeny + Emoticone MVP</td></tr>
+        <tr><td>Transcendent</td><td>Skin de tabuleiro exclusiva da temporada + 5.000 Zeny + Troféu permanente</td></tr>
+        <tr><td>God of War (Top 500)</td><td>Nome no Hall da Fama permanente + Skin animada de Odin + 15.000 Zeny + Placa no perfil</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Leaderboard Global</h3>
+  <p>Painel público acessível a todos os jogadores, atualizado em tempo real, exibindo Top 100 global, Top 50 por região e Top 10 por facção. Histórico de temporadas preservado no perfil do jogador.</p>
+</section>
+
+<!-- ═══════════════ SEÇÃO 7: CADASTRO E AUTENTICAÇÃO ═══════════════ -->
+<section class="section" id="auth">
+  <p class="section-eyebrow">07</p>
+  <h2 class="section-title">Cadastro e <span class="accent">Autenticação</span></h2>
+
+  <p>O sistema de contas é a fundação da experiência competitiva. O cadastro é gratuito e obrigatório para jogar qualquer modo online (exceto treino offline vs IA local).</p>
+
+  <h3>Dados de Cadastro</h3>
+
+  <div class="schema-block">
+    <div class="schema-header">TABELA: players — Campos do Cadastro</div>
+    <div class="schema-row">
+      <span class="schema-pk">PK</span>
+      <span class="schema-field">id</span>
+      <span class="schema-type">UUID</span>
+      <span class="schema-constraint">NOT NULL · AUTO</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">nome_completo</span>
+      <span class="schema-type">VARCHAR(100)</span>
+      <span class="schema-constraint">NOT NULL</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">data_nascimento</span>
+      <span class="schema-type">DATE</span>
+      <span class="schema-constraint">NOT NULL · Mínimo: 13 anos</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">email</span>
+      <span class="schema-type">VARCHAR(255)</span>
+      <span class="schema-constraint">NOT NULL · UNIQUE · Verificado</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">login (nickname)</span>
+      <span class="schema-type">VARCHAR(24)</span>
+      <span class="schema-constraint">NOT NULL · UNIQUE · Alfanumérico+_</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">password_hash</span>
+      <span class="schema-type">CHAR(60)</span>
+      <span class="schema-constraint">NOT NULL · bcrypt rounds=12</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">email_verified</span>
+      <span class="schema-type">BOOLEAN</span>
+      <span class="schema-constraint">DEFAULT false</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">created_at</span>
+      <span class="schema-type">TIMESTAMP</span>
+      <span class="schema-constraint">AUTO · UTC</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">last_login</span>
+      <span class="schema-type">TIMESTAMP</span>
+      <span class="schema-constraint">AUTO · UTC</span>
+    </div>
+    <div class="schema-row">
+      <span class="schema-field" style="padding-left:32px">status</span>
+      <span class="schema-type">ENUM</span>
+      <span class="schema-constraint">active | suspended | banned | pending</span>
+    </div>
+  </div>
+
+  <h3>Fluxo de Cadastro</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <p class="timeline-label">Etapa 1</p>
+      <p class="timeline-title">Preenchimento do Formulário</p>
+      <p class="timeline-desc">O usuário preenche: Nome completo, Data de nascimento, E-mail, Login desejado, Senha (mín. 8 chars, 1 maiúscula, 1 número) e confirmação de senha. Verificação de unicidade de e-mail e login em tempo real.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-label">Etapa 2</p>
+      <p class="timeline-title">Verificação de E-mail</p>
+      <p class="timeline-desc">Token de 6 dígitos enviado ao e-mail. Válido por 15 minutos. Reenvio permitido após 60 segundos. Máximo 5 tentativas antes de gerar novo token.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-label">Etapa 3</p>
+      <p class="timeline-title">Criação do Personagem</p>
+      <p class="timeline-desc">Escolha de avatar inicial (6 opções baseadas em classes do RO), customização básica de aparência e seleção da facção inicial (pode ser alterada entre partidas).</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-label">Etapa 4</p>
+      <p class="timeline-title">Tutorial Obrigatório</p>
+      <p class="timeline-desc">Partida guiada contra IA Poring que ensina o ciclo completo de turnos. Dura ~10 minutos. Recompensa: 200 Zeny de boas-vindas e badge "Novato dos Reinos".</p>
+    </div>
+  </div>
+
+  <h3>Segurança e Autenticação</h3>
+  <ul class="styled">
+    <li><strong>JWT Access Token:</strong> Expiração de 15 minutos, armazenado em memória (não localStorage)</li>
+    <li><strong>Refresh Token:</strong> Expiração de 30 dias, HTTPOnly cookie, rotação automática</li>
+    <li><strong>2FA Opcional:</strong> TOTP via Google Authenticator ou SMS (para contas com rank Knight+)</li>
+    <li><strong>Rate Limiting:</strong> Máximo 5 tentativas de login, bloqueio progressivo (15min, 1h, 24h)</li>
+    <li><strong>Login Social:</strong> OAuth 2.0 com Google e Discord (opcional, vinculado ao e-mail principal)</li>
+    <li><strong>LGPD:</strong> Consentimento explícito coletado no cadastro; painel de gerenciamento de dados no perfil; direito ao esquecimento implementado</li>
+  </ul>
+</section>
+
+<!-- ═══════════════ SEÇÃO 8: BANCO DE DADOS ═══════════════ -->
+<section class="section" id="banco">
+  <p class="section-eyebrow">08</p>
+  <h2 class="section-title">Modelagem do <span class="accent">Banco de Dados</span></h2>
+
+  <p>Todo o banco de dados roda no <strong>Supabase (PostgreSQL gerenciado)</strong>. A tabela de usuários base (<code>auth.users</code>) é gerenciada pelo Supabase Auth; os dados do jogo ficam no schema <code>public</code> com FK referenciando <code>auth.users.id</code>. Estado de jogo em tempo real usa Supabase Realtime Channels + Redis para buffer de alta frequência de ações.</p>
+
+  <h3>Entidades Principais (PostgreSQL)</h3>
+
+  <div class="schema-block">
+    <div class="schema-header">TABELA: matches — Partidas</div>
+    <div class="schema-row"><span class="schema-pk">PK</span><span class="schema-field">id</span><span class="schema-type">UUID</span><span class="schema-constraint">NOT NULL</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">mode</span><span class="schema-type">ENUM</span><span class="schema-constraint">normal | ranked | training | custom</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">status</span><span class="schema-type">ENUM</span><span class="schema-constraint">lobby | in_progress | finished | aborted</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">winner_id</span><span class="schema-type">UUID FK</span><span class="schema-constraint">→ players.id · NULLABLE</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">started_at</span><span class="schema-type">TIMESTAMP</span><span class="schema-constraint">UTC</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">finished_at</span><span class="schema-type">TIMESTAMP</span><span class="schema-constraint">UTC · NULLABLE</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">settings_json</span><span class="schema-type">JSONB</span><span class="schema-constraint">Configurações da sala</span></div>
+  </div>
+
+  <div class="schema-block">
+    <div class="schema-header">TABELA: match_players — Participantes da Partida</div>
+    <div class="schema-row"><span class="schema-pk">PK</span><span class="schema-field">match_id + player_id</span><span class="schema-type">UUID+UUID</span><span class="schema-constraint">Composite PK</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">faction_id</span><span class="schema-type">INT</span><span class="schema-constraint">FK → factions.id</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">color</span><span class="schema-type">ENUM</span><span class="schema-constraint">red | blue | green | yellow | black | purple</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">secret_mission_id</span><span class="schema-type">INT</span><span class="schema-constraint">FK → missions.id</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">mmr_before</span><span class="schema-type">INT</span><span class="schema-constraint">NULLABLE (só ranked)</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">mmr_delta</span><span class="schema-type">SMALLINT</span><span class="schema-constraint">NULLABLE · +/-</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">placement</span><span class="schema-type">SMALLINT</span><span class="schema-constraint">1=vencedor</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">abandoned</span><span class="schema-type">BOOLEAN</span><span class="schema-constraint">DEFAULT false</span></div>
+  </div>
+
+  <div class="schema-block">
+    <div class="schema-header">TABELA: player_stats — Estatísticas Acumuladas</div>
+    <div class="schema-row"><span class="schema-pk">PK</span><span class="schema-field">player_id</span><span class="schema-type">UUID FK</span><span class="schema-constraint">→ players.id</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">current_mmr</span><span class="schema-type">INT</span><span class="schema-constraint">DEFAULT 800</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">peak_mmr</span><span class="schema-type">INT</span><span class="schema-constraint">DEFAULT 800</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">matches_total / wins / losses / abandoned</span><span class="schema-type">INT</span><span class="schema-constraint">DEFAULT 0</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">ranked_matches / ranked_wins</span><span class="schema-type">INT</span><span class="schema-constraint">DEFAULT 0</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">territories_conquered_total</span><span class="schema-type">BIGINT</span><span class="schema-constraint">DEFAULT 0</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">zeny_balance</span><span class="schema-type">INT</span><span class="schema-constraint">DEFAULT 200</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">favorite_faction_id</span><span class="schema-type">INT FK</span><span class="schema-constraint">NULLABLE · calculado</span></div>
+  </div>
+
+  <h3>Estado de Jogo em Tempo Real — Supabase Realtime + Redis</h3>
+  <p>O Supabase Realtime transmite eventos de jogo via WebSocket nativo. O Redis (Railway Redis ou Supabase compatível) funciona como buffer de estado de alta frequência — ações de dado e movimentos de tropa — antes de persistir no PostgreSQL:</p>
+  <ul class="styled">
+    <li><strong>game:{match_id}:state</strong> — JSON completo do tabuleiro: territórios, tropas por jogador, turno atual, fase (recrutamento/ataque/movimento)</li>
+    <li><strong>game:{match_id}:turn_timer</strong> — TTL de 60/90/120s, expira automaticamente passando o turno</li>
+    <li><strong>game:{match_id}:chat</strong> — Buffer de mensagens do chat em partida (mantido por 24h após fim)</li>
+    <li><strong>player:{player_id}:session</strong> — Estado de sessão WebSocket ativa do jogador</li>
+  </ul>
+</section>
+
+<!-- ═══════════════ SEÇÃO 9: TECNOLOGIA ═══════════════ -->
+<section class="section" id="tech">
+  <p class="section-eyebrow">09</p>
+  <h2 class="section-title">Stack <span class="accent">Tecnológica</span></h2>
+
+  <div class="callout">
+    <p class="callout-title">Stack Principal Definida</p>
+    <p>Frontend em <strong>React</strong>, backend em <strong>Python</strong> e banco de dados + infraestrutura via <strong>Supabase</strong>. Essa combinação oferece desenvolvimento rápido, auth e realtime prontos nativamente, e escalabilidade PostgreSQL sem overhead de DevOps.</p>
+  </div>
+
+  <h3>Frontend — React</h3>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <p class="tech-layer">Framework</p>
+      <p class="tech-name">React 18 + TypeScript</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Build Tool</p>
+      <p class="tech-name">Vite</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Game Rendering</p>
+      <p class="tech-name">PixiJS v8</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">State Management</p>
+      <p class="tech-name">Zustand</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Realtime (Supabase)</p>
+      <p class="tech-name">supabase-js · Channels</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Roteamento</p>
+      <p class="tech-name">React Router v6</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Queries / Cache</p>
+      <p class="tech-name">TanStack Query v5</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Estilização</p>
+      <p class="tech-name">Tailwind CSS + CSS Modules</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Animações</p>
+      <p class="tech-name">Framer Motion</p>
+    </div>
+  </div>
+
+  <h3>Backend — Python</h3>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <p class="tech-layer">Framework HTTP</p>
+      <p class="tech-name">FastAPI</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Servidor ASGI</p>
+      <p class="tech-name">Uvicorn + Gunicorn</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">WebSocket (Jogo)</p>
+      <p class="tech-name">FastAPI WebSocket</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">ORM / DB</p>
+      <p class="tech-name">SQLAlchemy 2 + asyncpg</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Cliente Supabase</p>
+      <p class="tech-name">supabase-py</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Validação</p>
+      <p class="tech-name">Pydantic v2</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Tarefas Assíncronas</p>
+      <p class="tech-name">Celery + Redis</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">IA dos Bots</p>
+      <p class="tech-name">MinMax + MCTS (pure Python)</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-layer">Testes</p>
+      <p class="tech-name">pytest + pytest-asyncio</p>
+    </div>
+  </div>
+
+  <h3>Supabase — Banco de Dados e Infraestrutura</h3>
+
+  <p>O Supabase provê toda a camada de dados e infraestrutura, eliminando a necessidade de gerenciar PostgreSQL, Auth e WebSocket de Realtime de forma separada.</p>
+
+  <div class="card-grid">
+    <div class="card" style="--card-accent: #3ECF8E;">
+      <span class="card-icon">🗄️</span>
+      <p class="card-title">PostgreSQL Gerenciado</p>
+      <p>Banco principal com todas as tabelas do jogo. Migrations via Supabase CLI. Row Level Security (RLS) para isolar dados por jogador.</p>
+    </div>
+    <div class="card" style="--card-accent: #3ECF8E;">
+      <span class="card-icon">🔐</span>
+      <p class="card-title">Supabase Auth</p>
+      <p>Autenticação completa: e-mail/senha, OAuth Google e Discord, verificação de e-mail, JWT automático, refresh token e gerenciamento de sessões.</p>
+    </div>
+    <div class="card" style="--card-accent: #3ECF8E;">
+      <span class="card-icon">⚡</span>
+      <p class="card-title">Realtime Channels</p>
+      <p>Canal dedicado por partida para sincronizar estado do tabuleiro entre jogadores com latência mínima. Usado para eventos de jogo, chat e notificações.</p>
+    </div>
+    <div class="card" style="--card-accent: #3ECF8E;">
+      <span class="card-icon">📦</span>
+      <p class="card-title">Storage</p>
+      <p>Assets estáticos do jogo: sprites de personagens e monstros, ícones de territórios, trilhas sonoras e skins cosméticas dos jogadores.</p>
+    </div>
+    <div class="card" style="--card-accent: #3ECF8E;">
+      <span class="card-icon">⚙️</span>
+      <p class="card-title">Edge Functions</p>
+      <p>Funções serverless para cálculo de MMR pós-partida, envio de e-mail de verificação via Resend, webhooks de eventos de temporada.</p>
+    </div>
+    <div class="card" style="--card-accent: #3ECF8E;">
+      <span class="card-icon">🔍</span>
+      <p class="tech-name">Row Level Security</p>
+      <p>Políticas RLS garantem que cada jogador acesse apenas seus próprios dados. Missões secretas, por exemplo, são invisíveis para outros jogadores até a revelação.</p>
+    </div>
+  </div>
+
+  <h3>Arquitetura de Comunicação</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Fluxo</th><th>Canal</th><th>Tecnologia</th><th>Motivo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Login / Cadastro</td>
+          <td>HTTPS REST</td>
+          <td>Supabase Auth + FastAPI</td>
+          <td>Operação pontual, não precisa de stream</td>
+        </tr>
+        <tr>
+          <td>Lobby / Matchmaking</td>
+          <td>REST + Realtime</td>
+          <td>FastAPI + Supabase Channel</td>
+          <td>Polling de fila + notificação de match encontrado</td>
+        </tr>
+        <tr>
+          <td>Estado do Tabuleiro</td>
+          <td>WebSocket</td>
+          <td>FastAPI WebSocket</td>
+          <td>Baixa latência crítica para ações de jogo</td>
+        </tr>
+        <tr>
+          <td>Chat em Partida</td>
+          <td>Realtime Channel</td>
+          <td>Supabase Broadcast</td>
+          <td>Mensagens efêmeras sem necessidade de persistência imediata</td>
+        </tr>
+        <tr>
+          <td>Leaderboard / Stats</td>
+          <td>REST</td>
+          <td>FastAPI + PostgreSQL View</td>
+          <td>Leitura simples, cacheada com Redis (TTL 60s)</td>
+        </tr>
+        <tr>
+          <td>Notificações de Temporada</td>
+          <td>Realtime + E-mail</td>
+          <td>Edge Function + Resend</td>
+          <td>Eventos pontuais de fim de temporada e rank up</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Estrutura de Pastas do Projeto</h3>
+
+  <div class="schema-block">
+    <div class="schema-header">Frontend — React / Vite</div>
+    <div class="schema-row"><span class="schema-field">src/</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">components/</span><span class="schema-type">—</span><span class="schema-constraint">UI compartilhado (Button, Modal, Avatar...)</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">features/</span><span class="schema-type">—</span><span class="schema-constraint">auth/, game/, lobby/, ranking/, profile/</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">game-engine/</span><span class="schema-type">—</span><span class="schema-constraint">PixiJS: board, territories, troops, dice</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">lib/</span><span class="schema-type">—</span><span class="schema-constraint">supabaseClient.ts, apiClient.ts, wsClient.ts</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">store/</span><span class="schema-type">—</span><span class="schema-constraint">Zustand slices: gameStore, userStore, matchStore</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">hooks/</span><span class="schema-type">—</span><span class="schema-constraint">useGame, useRealtime, useAuth, useMatchmaking</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">pages/</span><span class="schema-type">—</span><span class="schema-constraint">Home, Login, Register, Lobby, Game, Profile, Leaderboard</span></div>
+  </div>
+
+  <div class="schema-block">
+    <div class="schema-header">Backend — Python / FastAPI</div>
+    <div class="schema-row"><span class="schema-field">app/</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">api/</span><span class="schema-type">—</span><span class="schema-constraint">routers: auth, matches, players, ranking, lobby</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">ws/</span><span class="schema-type">—</span><span class="schema-constraint">game_socket.py — gerenciador de salas WebSocket</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">core/</span><span class="schema-type">—</span><span class="schema-constraint">config.py, security.py, supabase_client.py, db.py</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">game/</span><span class="schema-type">—</span><span class="schema-constraint">engine.py, board.py, dice.py, missions.py, events.py</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">ai/</span><span class="schema-type">—</span><span class="schema-constraint">bot_poring.py, bot_orc.py, bot_baphomet.py, mcts.py</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">models/</span><span class="schema-type">—</span><span class="schema-constraint">SQLAlchemy ORM: Player, Match, MatchPlayer, Territory...</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">schemas/</span><span class="schema-type">—</span><span class="schema-constraint">Pydantic: PlayerCreate, MatchState, TurnAction...</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">tasks/</span><span class="schema-type">—</span><span class="schema-constraint">Celery: mmr_recalc, season_end, ban_checks</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">tests/</span><span class="schema-type">—</span><span class="schema-constraint">pytest: unit (engine), integration (API), e2e (WS)</span></div>
+  </div>
+
+  <div class="schema-block">
+    <div class="schema-header">Supabase — Migrations e Edge Functions</div>
+    <div class="schema-row"><span class="schema-field">supabase/</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">migrations/</span><span class="schema-type">—</span><span class="schema-constraint">SQL versionado: 001_players, 002_matches, 003_stats...</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">functions/</span><span class="schema-type">—</span><span class="schema-constraint">calculate-mmr/, send-verification/, season-end/</span></div>
+    <div class="schema-row"><span class="schema-field" style="padding-left:32px">seed/</span><span class="schema-type">—</span><span class="schema-constraint">territories.sql, factions.sql, missions.sql, items.sql</span></div>
+  </div>
+
+  <h3>Requisitos Não Funcionais</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Requisito</th><th>Meta</th><th>Crítico?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Latência de ação (P95)</td><td>&lt; 200ms</td><td><span class="badge badge-crimson">Sim</span></td></tr>
+        <tr><td>Disponibilidade</td><td>99.5% uptime/mês</td><td><span class="badge badge-crimson">Sim</span></td></tr>
+        <tr><td>Jogadores simultâneos (Fase 1)</td><td>10.000 CCU</td><td><span class="badge badge-gold">Alto</span></td></tr>
+        <tr><td>Tempo de matchmaking (Normal)</td><td>&lt; 90 segundos</td><td><span class="badge badge-gold">Alto</span></td></tr>
+        <tr><td>Tempo de matchmaking (Ranked)</td><td>&lt; 3 minutos</td><td><span class="badge badge-teal">Médio</span></td></tr>
+        <tr><td>FPS do client (hardware médio)</td><td>60 FPS estável</td><td><span class="badge badge-gold">Alto</span></td></tr>
+        <tr><td>Dados pessoais criptografados em repouso</td><td>AES-256 (Supabase nativo)</td><td><span class="badge badge-crimson">Sim</span></td></tr>
+        <tr><td>LGPD / GDPR compliance</td><td>100% (RLS + painel de dados)</td><td><span class="badge badge-crimson">Sim</span></td></tr>
+        <tr><td>Deploy backend Python</td><td>Railway ou Render (Free tier → Pro)</td><td><span class="badge badge-teal">Médio</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ SEÇÃO 10: ROADMAP ═══════════════ -->
+<section class="section" id="roadmap">
+  <p class="section-eyebrow">10</p>
+  <h2 class="section-title"><span class="accent">Roadmap</span> de Desenvolvimento</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <p class="timeline-label">Meses 1–3 · Fase Alpha</p>
+      <p class="timeline-title">Núcleo do Jogo</p>
+      <p class="timeline-desc">Engine de tabuleiro funcional com mecânicas completas do WAR. Mapa dos Seis Reinos com 42 territórios. Sistema de cadastro e autenticação. Modo treino vs IA Poring. Interface básica sem assets finais do RO.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-label">Meses 4–6 · Fase Beta Fechado</p>
+      <p class="timeline-title">Multiplayer e Conteúdo</p>
+      <p class="timeline-desc">Partidas normais multiplayer com WebSocket. Sistema de salas personalizadas. Integração visual completa do Ragnarok Online (sprites, músicas, UI). IA Orc (nível médio). Sistema de Zeny e cosméticos básicos.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-label">Meses 7–9 · Beta Aberto</p>
+      <p class="timeline-title">Competição e Ranking</p>
+      <p class="timeline-desc">Sistema de ranking completo com MMR e 9 divisões. Primeira temporada oficial. Leaderboard global. IA Baphomet (nível difícil). Eventos Ragnarok aleatórios implementados. Sistema de suspensão por abandono.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-label">Mês 10 · Lançamento Oficial</p>
+      <p class="timeline-title">Launch v1.0</p>
+      <p class="timeline-desc">Lançamento público. Marketing para comunidades de RO. Segunda temporada com recompensas temáticas de WoE (War of Emperium). Sistema de amigos e chat global. Mobile companion app (visualização de stats).</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-label">Pós-Launch · v1.x</p>
+      <p class="timeline-title">Expansões</p>
+      <p class="timeline-desc">Modo Torneio (16 jogadores, brackets eliminatórias). Novas facções baseadas em Doram Race e Summoner. Modo Expedição (co-op vs IA Baphomet em mapa especial). Sistema de Guildas entre jogadores.</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer class="doc-footer">
+  <div class="container">
+    <p>RAGNAROK WARS · PRD v1.0 · Documento Confidencial · Março 2026</p>
+    <p style="margin-top:8px">Este documento é uma especificação interna de produto. Ragnarok Online é propriedade de Gravity Co., Ltd.</p>
+  </div>
+</footer>
+
+</body>
+</html>

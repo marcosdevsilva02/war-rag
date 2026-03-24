@@ -1,0 +1,155 @@
+.lobby-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.lobby-container {
+  max-width: 900px;
+  width: 100%;
+}
+
+.lobby-header {
+  margin-bottom: 3rem;
+}
+
+.lobby-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 0;
+}
+
+.lobby-section {
+  margin-bottom: 2.5rem;
+}
+
+.lobby-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+/* Faction cards */
+.faction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.faction-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.faction-card:hover {
+  border-color: var(--f-color, var(--gold));
+  transform: translateY(-2px);
+}
+
+.faction-card.selected {
+  border-color: var(--f-color, var(--gold));
+  background: color-mix(in srgb, var(--f-color, var(--gold)) 10%, var(--surface));
+  box-shadow: 0 0 0 1px var(--f-color, var(--gold)), 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.faction-icon {
+  font-size: 2rem;
+}
+
+.faction-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.faction-passive {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Player count */
+.player-count-selector {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.count-btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.count-btn:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
+
+.count-btn.active {
+  border-color: var(--gold);
+  background: rgba(201, 162, 39, 0.12);
+  color: var(--gold);
+}
+
+.lobby-info {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Summary */
+.lobby-summary {
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.summary-icon {
+  font-size: 2.5rem;
+}
+
+.summary-card strong {
+  color: var(--text);
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+}
+
+.summary-card small {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.lobby-actions {
+  display: flex;
+  justify-content: center;
+}
