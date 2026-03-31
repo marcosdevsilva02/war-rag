@@ -58,7 +58,22 @@
 }
 
 .player-item.active {
-  background: rgba(201, 162, 39, 0.08);
+  background: rgba(201, 162, 39, 0.15);
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 15px rgba(201, 162, 39, 0.2);
+  transform: scale(1.02);
+  animation: activePulse 2s infinite ease-in-out;
+}
+
+@keyframes activePulse {
+  0% { box-shadow: 0 0 10px rgba(201, 162, 39, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(201, 162, 39, 0.4); }
+  100% { box-shadow: 0 0 10px rgba(201, 162, 39, 0.2); }
+}
+
+.player-item.active .player-name {
+  color: #fff;
+  font-weight: 700;
 }
 
 .player-color-dot {

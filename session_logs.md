@@ -22,19 +22,38 @@ Hoje iniciamos o projeto **Ragnarok Wars**, um jogo de conquista territorial bas
 - **Distribuição Inicial**: Implementado `startGame` que embaralha e distribui os 42 territórios entre os jogadores.
 - **Sistema de Recrutamento**: Cálculo automático de bônus por quantidade de territórios e domínio de reinos completos (ex: Midgard bônus +7).
 - **Interatividade no Tabuleiro**: Jogadores podem clicar em seus territórios para distribuir tropas durante a fase de RECRUITMENT.
-- **Controles de Jogo**: Novo componente `GameControls.tsx` para gerenciar o fluxo de fases e turnos.
+- **Controles de Jogo**: Componente `GameControls.tsx` para gerenciar o fluxo de fases e turnos.
 
-## Estado Atual e Pendências (Sessão 2)
-- **Abertura do Site**: Frontend 100% funcional localmente (Vite + React).
-- **Correção Crítica**: Resolvido crash de inicialização do Supabase configurando URLs válidas no `.env`.
+### 5. Reestruturação de Páginas e Rotas [Finalizado]
+- **Landing Page (`/`)**: Nova tela de apresentação com cards de features e os 6 reinos com cores únicas.
+- **Lobby (`/lobby`)**: Tela de configuração de partida com escolha de facção (6 opções) e número de jogadores. Protegida — redireciona para login.
+- **Game (`/game`)**: Tela de jogo com sidebar de jogadores + tabuleiro PixiJS. Também protegida.
+- **App.tsx**: Navegação limpa com logo, links e proteção de rotas via `<Navigate>`.
+- **Arquivos Criados**:
+  - `src/pages/LandingPage.tsx` + `LandingPage.css`
+  - `src/pages/LobbyPage.tsx` + `LobbyPage.css`
+  - `src/pages/GamePage.tsx` + `GamePage.css`
+
+### 6. Board Reativo (PixiJS) [Finalizado]
+- **Separação de responsabilidades**: Inicialização do PixiJS feita uma única vez; renderização dos sprites é feita separadamente e re-executa quando o estado muda.
+- **Linhas de Conexão**: Mapa agora exibe as adjacências entre territórios (linhas semitransparentes).
+- **Highlights visuais**: Território selecionado fica dourado; alvos válidos de ataque ficam vermelhos; fase de recrutamento ilumina seus territórios.
+- **Combat reativo**: `resolveCombat` no gameStore agora aplica resultado dos dados diretamente no estado Zustand — reduz tropas e conquista território se defensor vai a 0.
+- **Movimento**: Fase MOVEMENT: clicar em território próprio + clicar em adjacente move metade das tropas.
+
+## Estado Atual e Pendências (Sessão 3 - 24/03/2026)
+- **Build**: Frontend 100% funcional sem erros no console.
+- **Correção Crítica**: Supabase crash resolvido, `.env` com placeholders válidos.
 - **Próximos Passos**:
-    - Implementar a lógica de combate (dados) com modificadores de classe (Atacante vs Defensor).
-    - Adicionar lógica de cartas de território e troca por tropas.
-- **Bloqueio Técnico**: O backend em Python continua inacessível no ambiente atual (falta Python no PATH), mas o desenvolvimento do frontend está avançando de forma independente.
+    1. **Passo 3**: Testar Lobby com credenciais reais do Supabase (seleção de facção → iniciar jogo → `/game`)
+    2. **Passo 4**: Condição de vitória (24 territórios ou eliminação)
+    3. **Passo 5**: Sistema de cartas de território + missões secretas
+    4. **Passo 6**: Melhorias visuais — animação de dados, efeitos de conquista, modo mobile
+- **Bloqueio Técnico**: O arquivo `frontend/.env` ainda usa **placeholders**. Para testar o Login/Lobby é preciso inserir as credenciais reais do projeto Supabase.
 
 ## Comandos Úteis para Retomar
-- **Rodar Frontend**: `cd frontend; powershell -ExecutionPolicy Bypass -Command "npm run dev"`
-- **Verificar Tarefas**: Consultar `task.md` no diretório de brain.
+- **Rodar Frontend**: `cd frontend; npm run dev`
+- **Task e Plano**: Consultar `task.md` e `implementation_plan.md` em `C:\Users\Karol\.gemini\antigravity\brain\420b209a-bb11-429f-9f7b-321f30501975\`
 
 ---
-*Assinado: Antigravity AI (Sessão 2 - 24/03/2026)*
+*Assinado: Antigravity AI (Sessão 3 - 24/03/2026)*

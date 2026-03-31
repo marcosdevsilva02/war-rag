@@ -2,7 +2,11 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Board } from '../game-engine/Board'
 import { GameControls } from '../features/gameplay/GameControls'
-import { useGameStore } from '../store/gameStore'
+import { useGameStore, type Player } from '../store/gameStore'
+import { GameOverOverlay } from '../features/game/GameOverOverlay'
+import { PhaseNotification } from '../features/game/PhaseNotification'
+import { CardsPanel } from '../features/game/CardsPanel'
+import { MissionCard } from '../features/game/MissionCard'
 import './GamePage.css'
 
 export const GamePage = () => {
@@ -28,7 +32,7 @@ export const GamePage = () => {
         {/* Jogadores */}
         <div className="players-list">
           <h4 className="sidebar-section-title">Jogadores</h4>
-          {players.map(p => (
+          {players.map((p: Player) => (
             <div
               key={p.id}
               className={`player-item ${p.id === activePlayerId ? 'active' : ''}`}
@@ -53,12 +57,21 @@ export const GamePage = () => {
           <div className="legend-item"><span style={{ color: '#4CAF50' }}>■</span> Alfheim (+3)</div>
           <div className="legend-item"><span style={{ color: '#1A8B8B' }}>■</span> Jotunheim (+3)</div>
         </div>
+
+        {/* Missões e Cartas */}
+        <div className="game-player-actions">
+          <MissionCard />
+          <CardsPanel />
+        </div>
       </aside>
 
       {/* Área principal do tabuleiro */}
       <main className="game-board-area">
         <Board />
       </main>
+
+      <PhaseNotification />
+      <GameOverOverlay />
     </div>
   )
 }

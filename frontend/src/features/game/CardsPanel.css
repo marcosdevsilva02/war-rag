@@ -1,0 +1,90 @@
+.cards-panel {
+  background: var(--surface2, #282438);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.panel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: #C9A227;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cards-list {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  min-height: 80px;
+}
+
+.card-item {
+  width: 70px;
+  height: 100px;
+  background: #1C1828;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.card-item:hover {
+  border-color: #C9A227;
+  transform: translateY(-2px);
+}
+
+.card-item.selected {
+  background: rgba(201, 162, 39, 0.2);
+  border-color: #C9A227;
+  box-shadow: 0 0 10px rgba(201, 162, 39, 0.3);
+}
+
+.card-symbol {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-territory {
+  font-size: 0.6rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: #aaa;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  padding: 0 4px;
+}
+
+.empty-msg {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+
+.btn-trade {
+  width: 100%;
+  margin-top: 1rem;
+  background: #C9A227;
+  color: #000;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: background 0.2s;
+}
+
+.btn-trade:hover {
+  background: #e6bb2e;
+}

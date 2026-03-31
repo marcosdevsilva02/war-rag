@@ -6,7 +6,7 @@ interface GameControlsProps {
 }
 
 export const GameControls: React.FC<GameControlsProps> = ({ compact }) => {
-  const { phase, nextPhase, activePlayerId, players } = useGameStore()
+  const { phase, nextPhase, endTurn, activePlayerId, players } = useGameStore()
 
   const activePlayer = players.find(p => p.id === activePlayerId)
   const recruitmentAmount = activePlayer?.troopsToDistribute || 0
@@ -41,8 +41,11 @@ export const GameControls: React.FC<GameControlsProps> = ({ compact }) => {
 
       {/* Ações */}
       <div className="controls-actions">
-        <button onClick={nextPhase} className="btn btn-outline btn-next-phase">
-          {phase === 'CARDS' ? 'Próximo Turno →' : 'Próxima Fase →'}
+        <button 
+          onClick={phase === 'CARDS' ? endTurn : nextPhase} 
+          className="btn btn-primary btn-next-phase"
+        >
+          {phase === 'CARDS' ? 'Finalizar Turno ✓' : 'Próxima Fase →'}
         </button>
       </div>
 
@@ -97,7 +100,25 @@ export const GameControls: React.FC<GameControlsProps> = ({ compact }) => {
         .btn-next-phase {
           width: 100%;
           justify-content: center;
-          font-size: 12px;
+          font-size: 13px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          padding: 0.8rem;
+          background: var(--gold);
+          color: #000;
+          border: none;
+          box-shadow: 0 4px 0 var(--gold-dark);
+          transition: all 0.2s;
+        }
+        .btn-next-phase:hover {
+          background: var(--gold-light);
+          transform: translateY(-1px);
+          box-shadow: 0 5px 0 var(--gold-dark);
+        }
+        .btn-next-phase:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 var(--gold-dark);
         }
       `}</style>
     </div>

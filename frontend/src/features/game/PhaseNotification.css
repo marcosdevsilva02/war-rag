@@ -1,0 +1,40 @@
+.phase-notification {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+  pointer-events: none;
+  animation: notificationIn 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards,
+             notificationOut 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67) 2s forwards;
+}
+
+.notification-content {
+  text-align: center;
+}
+
+.notification-text {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(201, 162, 39, 0.8);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.notification-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C9A227, transparent);
+  width: 100%;
+}
+
+@keyframes notificationIn {
+  from { opacity: 0; transform: translate(-50%, -60%) scale(0.8); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes notificationOut {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -40%) scale(1.1); }
+}
